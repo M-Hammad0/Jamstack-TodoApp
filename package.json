@@ -15,6 +15,8 @@
   },
   "dependencies": {
     "gatsby": "^2.26.1",
+    "gatsby-plugin-create-client-paths": "^2.5.0",
+    "netlify-identity-widget": "^1.9.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0"
   },
