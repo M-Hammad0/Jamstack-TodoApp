@@ -12,6 +12,7 @@ module.exports = {
       options: {
         prefixes: [`/app/*`]
       }
-    }
+    },
+    `gatsby-plugin-theme-ui`,
   ],
 }

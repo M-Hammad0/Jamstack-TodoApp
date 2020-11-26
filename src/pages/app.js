@@ -1,11 +1,12 @@
 import { Router, Link } from "@reach/router"
 import React,{ useContext } from "react"
 import { IdentityContext } from "../../identity-context"
+import Dashboard from "../components/Dashboard"
 
-let Dash = () => {
-  const { user } = useContext(IdentityContext)
-  return <div>Dash hasUser: {user && user.user_metadata.full_name}</div>
-}
+// let Dash = () => {
+//   const { user } = useContext(IdentityContext)
+//   return <div>Dash hasUser: {user && user.user_metadata.full_name}</div>
+// }
 
 let DashLoggedOut = props => {
   const {user, identity: netlifyIdentity } = useContext(IdentityContext)
@@ -40,7 +41,7 @@ export default props => {
   }
   return (
     <Router>
-      <Dash path="/app" />
+      <Dashboard path="/app" />
     </Router>
   )
 }

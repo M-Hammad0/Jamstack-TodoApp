@@ -1,0 +1,13 @@
+type Todo {
+   title: String!
+   completed: Boolean
+   user: String!
+}
+
+type Query {
+   allTodos: [Todo!]
+   todosByCompletedFlag(completed: Boolean!): [Todo!]
+   todosByUser(user: String!): [Todo!]
+}
+
+

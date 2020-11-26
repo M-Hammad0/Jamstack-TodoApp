@@ -19,7 +19,6 @@ const IdentityProvider = props => {
     netlifyIdentity.close();
     setUser();
   });
-  console.log(user)
 
   return (
     <IdentityContext.Provider value={{ identity: netlifyIdentity, user }}>
