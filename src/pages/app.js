@@ -1,30 +1,31 @@
-import { Router, Link } from "@reach/router"
+import { Router } from "@reach/router"
 import React,{ useContext } from "react"
 import { IdentityContext } from "../../identity-context"
 import Dashboard from "../components/Dashboard"
+import Nav from "../components/Nav"
+import Button from 'react-bootstrap/Button'
 
-// let Dash = () => {
-//   const { user } = useContext(IdentityContext)
-//   return <div>Dash hasUser: {user && user.user_metadata.full_name}</div>
-// }
 
 let DashLoggedOut = props => {
   const {user, identity: netlifyIdentity } = useContext(IdentityContext)
 
-
   return (
     <div>
-      <h1>Get Stuff Done!</h1>
-      <Link to="/">home</Link>
-      <Link to="/app">Dashboard</Link>
-      <h3>Welcome {user && user.user_metadata.full_name}</h3>
-      <button
+    <Nav />
+    <h1>GET STUFF<span class="styling"> Done! </span></h1>
+    <div className='container'>
+    
+      <h1>WELCOME {user && user.user_metadata.full_name.toUpperCase()}</h1>
+      <Button
+    variant="success"
         onClick={() => {
           netlifyIdentity.open()
         }}
       >
         Login
-      </button>
+      </Button>
+    </div>
+      
     </div>
   )
 }

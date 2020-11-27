@@ -1,24 +1,28 @@
 import React, { useContext } from "react"
-import { Link } from "gatsby"
 import { IdentityContext } from "../../identity-context"
+import Button from "react-bootstrap/Button"
+import Nav from "../components/Nav"
 
 export default function Home() {
-  const {user, identity: netlifyIdentity} = useContext(IdentityContext)
-
+  const { user, identity: netlifyIdentity } = useContext(IdentityContext)
 
   return (
     <div>
-      <h1>Get Stuff Done!</h1>
-      <Link to="/">home</Link>
-      <Link to="/app">Dashboard</Link>
-      <h3>Welcome {user && user.user_metadata.full_name}</h3>
-      <button
-        onClick={() => {
-          netlifyIdentity.open()
-        }}
-      >
-        Login
-      </button>
+      <Nav />
+      <h1>
+        GET STUFF<span class="styling"> Done! </span>
+      </h1>
+      <div className="container">
+        <h1>WELCOME {user && user.user_metadata.full_name.toUpperCase()}</h1>
+        <Button
+          variant="success"
+          onClick={() => {
+            netlifyIdentity.open()
+          }}
+        >
+          Login
+        </Button>
+      </div>
     </div>
   )
 }
