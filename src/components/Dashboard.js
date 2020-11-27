@@ -53,9 +53,9 @@ const Dashboard = () => {
             <form>
                 <input value={text} onChange={e => setText(e.target.value)}></input>
             </form>
-            <button onClick={async e => {
+            <button onClick={async(e) => {
                 e.preventDefault()
-                axios.post('./netlify/functions/createTodo',{
+                await axios.post('/.netlify/functions/createTodo',{
                     data: {
                         title: text,
                         user: userName
@@ -68,7 +68,15 @@ const Dashboard = () => {
             {data && data.todosByUser.data.map((t,idx) => (
                 <div key={idx}>
                 <span>{t.title}</span>
-                <button style={{marginLeft: "20px"}}>delete</button>
+                <button style={{marginLeft: "20px"}} onClick={async(e) => {
+                    e.preventDefault()
+                    await axios.delete('/.netlify/functions/deleteTodo',{
+                        data: {
+                            id: t._id
+                        }
+                    })
+                    refetch()
+                }}>delete</button>
                 </div>
                 
             ))}
@@ -77,3 +85,6 @@ const Dashboard = () => {
 }
 
 export default Dashboard
+
+
+

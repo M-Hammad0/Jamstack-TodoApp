@@ -1,8 +1,7 @@
-const axios = require("axios")
-require("dotenv").config()
-const sendQuery = require("./utils/sendQuery")
+const axios = require("axios");
+require("dotenv").config();
 
-exports.handler = async event => {
+exports.handler = async (event) => {
   if (event.httpMethod !== "POST") {
     return {
       statusCode: 405,
@@ -21,19 +20,34 @@ exports.handler = async event => {
   }
 `
 
-  const {data: {title,user} } = JSON.parse(event.body)
-  const variables = { title, user, completed: false }
+  const {data:{title,user}} = JSON.parse(event.body)
 
   try {
-    const { createTodo } = await sendQuery(CREATE_TODO, variables)
+    const {data } = await axios({
+      url: "https://graphql.fauna.com/graphql",
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.FAUNADB_SECRET_KEY}`,
+      },
+      data: {
+        query: CREATE_TODO,
+        variables: {
+          title,
+          user,
+          completed: false
+        },
+      },
+    });
+
     return {
       statusCode: 200,
-      body: JSON.stringify(createTodo),
-    }
+      body: JSON.stringify(data), // stringyfy json to send to faunadb
+    };
   } catch (error) {
+    console.log(error);
     return {
       statusCode: 500,
       error: JSON.stringify("something went wrong"),
-    }
+    };
   }
-}
+};
