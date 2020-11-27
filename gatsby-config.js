@@ -14,5 +14,11 @@ module.exports = {
       }
     },
     `gatsby-plugin-theme-ui`,
+    {
+      resolve: 'gatsby-plugin-apollo',
+      options: {
+        uri: '/.netlify/functions/getTodo'
+      } // isko remove kr ke simple lagao 
+    }
   ],
 }

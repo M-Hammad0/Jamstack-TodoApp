@@ -1,54 +1,77 @@
 import React, { useReducer, useState,useEffect,useContext  } from 'react'
-import { graphql } from "gatsby"
 import {IdentityContext} from '../../identity-context'
 import axios from 'axios'
+import { gql, useQuery } from '@apollo/client'
 
 
-function reducer(state,action) {
-    switch(action.type) {
-        case "add-todo":
-            return {
-                todos: [...state.todos, {text: action.text, completed: false}]
-            }
-        case "delete-todo":
-            return {
-                todos: [...state.todos.filter((todo,idx) => idx !== action.idx)]
-            }    
-        default:
-            return state    
+// function reducer(state,action) {
+//     switch(action.type) {
+//         case "add-todo":
+//             return {
+//                 todos: [...state.todos, {text: action.text, completed: false}]
+//             }
+//         case "delete-todo":
+//             return {
+//                 todos: [...state.todos.filter((todo,idx) => idx !== action.idx)]
+//             }    
+//         default:
+//             return state    
+//     }
+// }
+
+
+const GET_LINKS = gql` 
+    query($user: String!){
+      todosByUser(user: $user){
+        data{
+          _id
+          title
+          completed
+          user
+        }
+      }
     }
-}
+      `
+
+
 
 const Dashboard = () => {
 
     const { user, identity: netlifyIdentity } = useContext(IdentityContext)
+    const [text,setText] = useState("")
 
-    useEffect(() => {
-        const gettodo = async () => {
-            const {data} = await axios.get('.netlify/functions/getTodo')
-            console.log(data)
+    const userName = user.user_metadata.full_name
+
+    const { loading, error, data,refetch } = useQuery(GET_LINKS,{
+        variables: {
+            user: userName
         }
-        gettodo()
-     },[])
-
-    // const {loading,data,error} = useQuery(GET_TODOS,{
-    //     variables: {
-    //         user: user
-    //     }
-    // })
+    })
 
     return (
         <div>
             <form>
-                <input></input>
+                <input value={text} onChange={e => setText(e.target.value)}></input>
             </form>
-            {/* {todos && todos.map((t,idx) => (
+            <button onClick={async e => {
+                e.preventDefault()
+                axios.post('./netlify/functions/createTodo',{
+                    data: {
+                        title: text,
+                        user: userName
+                    }
+                })
+                setText("")
+                refetch()
+            }
+            }>add todo</button>
+            {data && data.todosByUser.data.map((t,idx) => (
                 <div key={idx}>
-                <span>{t.text}</span>
-                <button style={{marginLeft: "20px"}} onClick={() => dispatch({type: 'delete-todo', idx})}>delete</button>
+                <span>{t.title}</span>
+                <button style={{marginLeft: "20px"}}>delete</button>
                 </div>
                 
-            ))} */}
+            ))}
         </div>
     )
 }

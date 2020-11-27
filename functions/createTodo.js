@@ -21,7 +21,7 @@ exports.handler = async event => {
   }
 `
 
-  const { title, user } = JSON.parse(event.body)
+  const {data: {title,user} } = JSON.parse(event.body)
   const variables = { title, user, completed: false }
 
   try {
