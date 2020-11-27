@@ -31,7 +31,9 @@ jobs:
       run: |
         yarn install --production
         yarn build
-        
+      env:
+          FAUNADB_SECRET_KEY: ${{secrets.FAUNADB_SECRET_KEY}}
+
     - name: Deploy to Netlify
       uses: nwtgck/actions-netlify@v1.1.3
       with:
